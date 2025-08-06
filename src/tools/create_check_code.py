@@ -92,10 +92,10 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
 def create_check_code(nb_path: Path, fp_ok: IOBase, fp_ng: IOBase) -> None:  # noqa: C901, PLR0914
     """チェック用のコード生成"""
     fp_ok.write(
-        "import os\nimport re\nfrom datetime import date\nfrom textwrap import dedent\nimport pandas as pd\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
+        "import os\nimport re\nfrom datetime import date\nfrom textwrap import dedent\nimport polars as pl\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
     )
     fp_ng.write(
-        "import os\nimport re\nfrom datetime import date\nfrom textwrap import dedent\nimport pandas as pd\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
+        "import os\nimport re\nfrom datetime import date\nfrom textwrap import dedent\nimport polars as pl\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
     )
     nb = nbformat.reads(nb_path.read_text(), 4)
     cells = nb["cells"]
