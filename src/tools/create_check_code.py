@@ -142,9 +142,10 @@ def create_check_code(  # noqa: C901, PLR0912, PLR0914
                     funcs = itertools.chain(
                         re.findall(r"([a-z]\w+)\(", answer),
                         re.findall(r"\.(bin|cat|dt|list|meta|name|struct|str)\.", answer),
+                        re.findall(r"\bpl\.(\w+)", answer),
                     )
                     for func in funcs:
-                        if func != "print" and title != last(func2prob[func], default=""):
+                        if func not in {"__version__", "print"} and title != last(func2prob[func], default=""):
                             func2prob[func].append(title)
             elif source.startswith("<details><summary>解答例</summary>"):
                 msg = f"Cell {count}: invalid 解答例\n{prob_source}"
@@ -168,6 +169,6 @@ if __name__ == "__main__":
         create_check_code(in_nb, fp_ok, fp_ng, func2prob)
     with Path("nbs/index.md").open("w") as fp:
         fp.write("# Index\n\n")
-        for key, lst in sorted(func2prob.items()):
+        for key in sorted(func2prob, key=str.lower):
             fp.write(f"* `{key}`:\n")
-            fp.writelines(f"  * {title[4:]}\n" for title in lst)
+            fp.writelines(f"  * {title[4:]}\n" for title in func2prob[key])
