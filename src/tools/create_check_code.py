@@ -9,6 +9,7 @@ uv run tmp/code_ng.py | grep OK
 # ruff: noqa: INP001
 
 import re
+from collections import defaultdict
 from io import IOBase
 from pathlib import Path
 
@@ -24,7 +25,7 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
     cell2: dict,
     cell3: dict,
     cell4: dict,
-) -> str:
+) -> tuple[str, list[str]]:
     """問題の処理"""
     msg = f"Cell {count}: invalid 問題\n{prob_source}"
     source = cell1["source"]
@@ -86,10 +87,15 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
         fp_ok.write(f"{answer}\n")
         fp_ok.write(f"{source}\n")
         fp_ng.write(f"{source}\n")
-    return title
+    return title, answers
 
 
-def create_check_code(nb_path: Path, fp_ok: IOBase, fp_ng: IOBase) -> None:  # noqa: C901, PLR0914
+def create_check_code(  # noqa: C901, PLR0912, PLR0914
+    nb_path: Path,
+    fp_ok: IOBase,
+    fp_ng: IOBase,
+    func2prob: dict[str, list[str]],
+) -> None:
     """チェック用のコード生成"""
     fp_ok.write(
         "import os\nfrom datetime import date\nfrom textwrap import dedent\nimport polars as pl\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
@@ -104,7 +110,7 @@ def create_check_code(nb_path: Path, fp_ok: IOBase, fp_ng: IOBase) -> None:  # n
     prob_source = ""
     it = iter(cells)
     count = 0
-    while count < n_cells:
+    while count < n_cells:  # noqa: PLR1702
         count += 1
         cell = next(it)
         source = cell["source"]
@@ -123,13 +129,19 @@ def create_check_code(nb_path: Path, fp_ok: IOBase, fp_ng: IOBase) -> None:  # n
             if source.startswith("### `問題"):
                 prob_source = source
                 prev = title_n
-                s = proc_prob(fp_ok, fp_ng, count, prob_source, cell, next(it), next(it), next(it))
-                m2 = re.match(r"### `問題 (\d+)\.(\d+)\.(\d+)` ", s)
+                title, answers = proc_prob(fp_ok, fp_ng, count, prob_source, cell, next(it), next(it), next(it))
+                m2 = re.match(r"### `問題 (\d+)\.(\d+)\.(\d+)` ", title)
                 title_n = tuple(map(int, m2.groups())) if m2 else ()
                 if prev >= title_n:
                     msg = f"Cell {count}: invalid 問題\n{prev} {title_n}\n{prob_source}"
                     raise ValueError(msg)
                 count += 3
+                for answer in answers:
+                    for s in re.findall(r"([a-z]\w+)\(", answer):
+                        if s != "print":
+                            func2prob[s].append(title)
+                    for s in re.findall(r"\.(bin|cat|dt|list|meta|name|struct|str)\.", answer):
+                        func2prob[s].append(title)
             elif source.startswith("<details><summary>解答例</summary>"):
                 msg = f"Cell {count}: invalid 解答例\n{prob_source}"
                 raise ValueError(msg)
@@ -147,5 +159,11 @@ if __name__ == "__main__":
     in_nb = Path("nbs/study_polars2.ipynb")
     out_ok = Path("tmp/code_ok.py")
     out_ng = Path("tmp/code_ng.py")
+    func2prob: dict[str, list[str]] = defaultdict(list)
     with out_ok.open("w") as fp_ok, out_ng.open("w") as fp_ng:
-        create_check_code(in_nb, fp_ok, fp_ng)
+        create_check_code(in_nb, fp_ok, fp_ng, func2prob)
+    with Path("nbs/index.md").open("w") as fp:
+        fp.write("# Index\n\n")
+        for key, lst in sorted(func2prob.items()):
+            fp.write(f"* `{key}`:\n")
+            fp.writelines(f"  * {title[4:]}\n" for title in lst)
