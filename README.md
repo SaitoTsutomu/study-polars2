@@ -40,3 +40,9 @@ uv run study-polars2
 * 黄色いセルを実行して確認する
 
 セル内でしか使わない変数は、`_`で始まります。
+
+## 参考
+
+https://github.com/SaitoTsutomu/study-polars2
+
+https://qiita.com/SaitoTsutomu/items/1a19dd484c88b77a4f2a
