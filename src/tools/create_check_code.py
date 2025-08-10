@@ -8,12 +8,14 @@ uv run tmp/code_ng.py | grep OK
 """
 # ruff: noqa: INP001
 
+import itertools
 import re
 from collections import defaultdict
 from io import IOBase
 from pathlib import Path
 
 import nbformat
+from more_itertools import last
 
 
 def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
@@ -47,8 +49,8 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
     metadata = cell2["metadata"]
     if cell2["cell_type"] != "code":
         raise ValueError(msg)
-    last = source.strip().splitlines()[-1]
-    if "# ここから解答を作成" not in last:
+    last_line = source.strip().splitlines()[-1]
+    if "# ここから解答を作成" not in last_line:
         raise ValueError(msg)
     if not metadata.get("editable", True) or metadata.get("frozen", True):
         raise ValueError(msg)
@@ -137,17 +139,19 @@ def create_check_code(  # noqa: C901, PLR0912, PLR0914
                     raise ValueError(msg)
                 count += 3
                 for answer in answers:
-                    for s in re.findall(r"([a-z]\w+)\(", answer):
-                        if s != "print":
-                            func2prob[s].append(title)
-                    for s in re.findall(r"\.(bin|cat|dt|list|meta|name|struct|str)\.", answer):
-                        func2prob[s].append(title)
+                    funcs = itertools.chain(
+                        re.findall(r"([a-z]\w+)\(", answer),
+                        re.findall(r"\.(bin|cat|dt|list|meta|name|struct|str)\.", answer),
+                    )
+                    for func in funcs:
+                        if func != "print" and title != last(func2prob[func], default=""):
+                            func2prob[func].append(title)
             elif source.startswith("<details><summary>解答例</summary>"):
                 msg = f"Cell {count}: invalid 解答例\n{prob_source}"
                 raise ValueError(msg)
         elif cell_type == "code":
-            last = source.strip().splitlines()[-1]
-            if "# ここから解答を作成" in last:
+            last_line = source.strip().splitlines()[-1]
+            if "# ここから解答を作成" in last_line:
                 msg = f"Cell {count}: invalid 解答欄\n{prob_source}"
                 raise ValueError(msg)
             if source.startswith("# このセルを実行してください"):
