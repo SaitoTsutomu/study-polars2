@@ -1,10 +1,14 @@
-# Polars100本ノック
+# Polars100+ノック
 
 ## はじめに
 
-これはPolars 1.32.0の知識を網羅的に確認するための100問の演習です。
+これはPolars 1.33.1の知識を網羅的に確認するための100問超の演習です。
 
 https://docs.pola.rs/
+
+次の関数を扱っています。
+
+https://github.com/SaitoTsutomu/study-polars2/blob/master/nbs/index.md
 
 ## 準備
 
