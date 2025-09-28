@@ -9,7 +9,7 @@ license = {text = "Apache-2.0"}
 name = "study-polars2"
 readme = "README.md"
 requires-python = ">=3.13"
-version = "0.2.0"
+version = "0.2.1"
 
 [dependency-groups]
 dev = [
