@@ -25,6 +25,7 @@ study-polars2 = "study_polars2:main"
 
 [tool.taskipy.tasks]
 check = "uv run src/tools/create_check_code.py && uv run tmp/code_ok.py | grep NG && uv run tmp/code_ng.py | grep OK"
+lint = "ruff check src; pyrefly check src"
 
 [tool.mypy]
 files = "src"
@@ -35,7 +36,7 @@ exclude = ["*.ipynb", "nbs"]
 src = ["src"]
 
 [tool.ruff.lint]
-ignore = ["COM812", "CPY", "D203", "D213", "D400", "D415", "DOC201", "DOC501", "E501", "PLW1514"]
+ignore = ["COM812", "CPY", "D203", "D213", "D400", "D415", "DOC201", "DOC501", "E501"]
 preview = true
 select = ["ALL"]
 

@@ -92,7 +92,7 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
     return title, answers
 
 
-def create_check_code(  # noqa: C901, PLR0912, PLR0914
+def create_check_code(  # noqa: C901, PLR0912, PLR0914, PLR0915
     nb_path: Path,
     fp_ok: IOBase,
     fp_ng: IOBase,
@@ -105,7 +105,10 @@ def create_check_code(  # noqa: C901, PLR0912, PLR0914
     fp_ng.write(
         "import os\nfrom datetime import date\nfrom textwrap import dedent\nimport polars as pl\nimport polars.selectors as cs\nfrom study_polars2.col import col\nos.chdir('tmp')\n"
     )
-    nb = nbformat.reads(nb_path.read_text(), 4)
+    nb = nbformat.reads(nb_path.read_text(encoding="utf-8"), 4)
+    if not isinstance(nb, nbformat.NotebookNode):
+        msg = "nb is not a NotebookNode"
+        raise TypeError(msg)
     cells = nb["cells"]
     n_cells = len(cells)
     title_n: tuple[int, ...] = ()
@@ -165,9 +168,12 @@ if __name__ == "__main__":
     out_ok = Path("tmp/code_ok.py")
     out_ng = Path("tmp/code_ng.py")
     func2prob: dict[str, list[str]] = defaultdict(list)
-    with out_ok.open("w") as fp_ok, out_ng.open("w") as fp_ng:
+    with (
+        out_ok.open("w", encoding="utf-8") as fp_ok,
+        out_ng.open("w", encoding="utf-8") as fp_ng,
+    ):
         create_check_code(in_nb, fp_ok, fp_ng, func2prob)
-    with Path("nbs/index.md").open("w") as fp:
+    with Path("nbs/index.md").open("w", encoding="utf-8") as fp:
         fp.write("# Index\n\n")
         for key in sorted(func2prob, key=str.lower):
             fp.write(f"* `{key}`:\n")
