@@ -1578,7 +1578,7 @@ wheels = [
 
 [[package]]
 name = "study-polars2"
-version = "0.3.0"
+version = "2026.5.3"
 source = { editable = "." }
 dependencies = [
     { name = "jupyter" },
