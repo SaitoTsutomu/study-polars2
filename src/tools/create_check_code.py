@@ -6,7 +6,6 @@ uv run tmp/code_ok.py | grep NG &&\
 uv run tmp/code_ng.py | grep OK
 ```
 """
-# ruff: noqa: INP001
 
 import itertools
 import re

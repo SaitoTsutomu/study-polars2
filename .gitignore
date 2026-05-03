@@ -7,9 +7,11 @@ work/
 .envrc
 .python-version
 Untitled*.ipynb
-Polars100Knock.ipynb
-study_polars.ipynb
-titanic.parquet
+nbs/Polars100Knock.ipynb
+nbs/study_polars.ipynb
+nbs/titanic.parquet
+nbs/study_polars2.md
+nbs/review.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
