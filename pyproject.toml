@@ -27,7 +27,7 @@ study-polars2 = "study_polars2:main"
 check = "uv run src/tools/create_check_code.py && uv run tmp/code_ok.py | grep NG && uv run tmp/code_ng.py | grep OK"
 jupyter = "uv run jupyter lab -y nbs"
 license = "uv run -w pip-licenses pip-licenses"
-lint = "ruff check src; pyrefly check src"
+lint = "ruff check src && pyrefly check src"
 pip-audit = "uv run -w pip-audit pip-audit"
 study = "uv run study-polars2"
 
