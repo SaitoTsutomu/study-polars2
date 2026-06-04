@@ -2,7 +2,7 @@
 authors = [{name = "Saito Tsutomu", email = "tsutomu7@hotmail.co.jp"}]
 dependencies = [
   "jupyter>=1.1.1",
-  "polars[numpy,pandas,plot,pyarrow]>=1.40.1",
+  "polars[numpy,pandas,plot,pyarrow]>=1.41.2",
 ]
 description = "Polars 100 knock"
 license = {text = "Apache-2.0"}
@@ -14,7 +14,7 @@ version = "2026.5.3"
 [dependency-groups]
 dev = [
   "jupyterlab-freeze>=0.1.2",
-  "more-itertools>=11.0.2",
+  "more-itertools>=11.1.0",
 ]
 
 [project.urls]
@@ -28,7 +28,6 @@ check = "uv run src/tools/create_check_code.py && uv run tmp/code_ok.py | grep N
 jupyter = "uv run jupyter lab -y nbs"
 license = "uv run -w pip-licenses pip-licenses"
 lint = "ruff check src && pyrefly check src"
-pip-audit = "uv run -w pip-audit pip-audit"
 study = "uv run study-polars2"
 
 [tool.uv]
