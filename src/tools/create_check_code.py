@@ -10,11 +10,14 @@ uv run tmp/code_ng.py | grep OK
 import itertools
 import re
 from collections import defaultdict
-from io import IOBase
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import nbformat
 from more_itertools import last
+
+if TYPE_CHECKING:
+    from io import IOBase
 
 
 def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917

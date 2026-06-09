@@ -8,8 +8,8 @@ description = "Polars 100 knock"
 license = {text = "Apache-2.0"}
 name = "study-polars2"
 readme = "README.md"
-requires-python = ">=3.13"
-version = "2026.5.3"
+requires-python = ">=3.14"
+version = "2026.6.9"
 
 [dependency-groups]
 dev = [
