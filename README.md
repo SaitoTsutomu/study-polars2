@@ -45,6 +45,17 @@ uv run study-polars2
 
 セル内でしか使わない変数は、`_`で始まります。
 
+## 復習
+
+下記のコマンドで「review」タグを付けたセルを抜き出すことができます。
+
+```sh
+uv run nbs/make_review.py
+```
+
+「review」タグは、右上のProperty inspectorのAdd Tagで追加・削除可能です。
+「準備」や問題一式を指定すると復習しやすいです。
+
 ## 参考
 
 https://github.com/SaitoTsutomu/study-polars2

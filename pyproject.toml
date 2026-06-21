@@ -41,7 +41,7 @@ url = "https://pypi.flatt.tech/simple/"
 project-includes = ["src"]
 
 [tool.ruff]
-exclude = ["*.ipynb", "nbs"]
+exclude = ["*.ipynb"]
 src = ["src"]
 
 [tool.ruff.lint]
