@@ -19,9 +19,9 @@ cells = src.cells[1:4]
 count = 0
 for cell in src.cells:
     if count or ("review" in cell.get("metadata", {}).get("tags", [])):
-        if comment in cell.get("source", ""):
-            i = cell["source"].index(comment)
-            cell["source"] = cell["source"][: i + len(comment)]
+        if comment in cell.source:
+            i = cell.source.index(comment)
+            cell.source = cell.source[: i + len(comment)]
         if "outputs" in cell:
             cell["outputs"] = []
         cells.append(cell)
