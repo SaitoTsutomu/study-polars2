@@ -9,12 +9,23 @@ input_ = Path("work/study_polars2.ipynb")
 output = Path("work/review.ipynb")
 
 if output.exists() and (len(sys.argv) <= 1 or sys.argv[1] != "--force"):
-    print(f"{output}を削除してください")
+    print(f"{output}を削除するか --force を付けてください")
     sys.exit()
 
 src = nbformat.read(input_, as_version=4)
 
-cells = [cell for cell in src.cells if "review" in cell.get("metadata", {}).get("tags", [])]
+comment = "# ここから解答を作成してください\n"
+cells = src.cells[1:4]
+count = 0
+for cell in src.cells:
+    if count or ("review" in cell.get("metadata", {}).get("tags", [])):
+        if comment in cell.get("source", ""):
+            i = cell["source"].index(comment)
+            cell["source"] = cell["source"][: i + len(comment)]
+        if "outputs" in cell:
+            cell["outputs"] = []
+        cells.append(cell)
+        count = 4 if count <= 0 else count - 1
 
 dst = nbformat.v4.new_notebook(
     cells=cells,
