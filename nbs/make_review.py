@@ -16,9 +16,10 @@ src = nbformat.read(input_, as_version=4)
 
 comment = "# ここから解答を作成してください\n"
 cells = src.cells[1:4]
-count = 0
+count = n = 0
 for cell in src.cells:
     if count or ("review" in cell.get("metadata", {}).get("tags", [])):
+        n += count <= 0
         if comment in cell.source:
             i = cell.source.index(comment)
             cell.source = cell.source[: i + len(comment)]
@@ -38,4 +39,4 @@ dst = nbformat.v4.new_notebook(
     },
 )
 nbformat.write(dst, output)
-print(f"{output}を作成しました")
+print(f"{output}（{n}問）を作成しました")

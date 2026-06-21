@@ -64,6 +64,8 @@ uv run nbs/status.py
 uv run nbs/make_review.py
 ```
 
+抜き出した問題が依存しているオブジェクトがあれば、そのオブジェクトの生成を問題に含めてください。
+
 ## 参考
 
 https://github.com/SaitoTsutomu/study-polars2
