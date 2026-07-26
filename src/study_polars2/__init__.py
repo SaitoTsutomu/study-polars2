@@ -7,7 +7,7 @@ from pathlib import Path
 from jupyter_core.command import main as jupyter_main
 
 
-def main() -> None:  # noqa: RUF067
+def main() -> None:  # ruff:ignore[non-empty-init-module]
     """nbs/study_polars2.ipynbをworkフォルダにコピーしてJupyterを起動する"""
     cwd = Path()
     (cwd / "work").mkdir(exist_ok=True)

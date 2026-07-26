@@ -46,16 +46,16 @@ src = ["src"]
 
 [tool.ruff.lint]
 ignore = [
-  "COM812",
+  "missing-trailing-comma",
   "CPY",
-  "D203",
-  "D213",
-  "D400",
-  "D415",
-  "DOC201",
-  "DOC501",
-  "E501",
-  "INP001",
+  "incorrect-blank-line-before-class",
+  "multi-line-summary-second-line",
+  "missing-trailing-period",
+  "missing-terminal-punctuation",
+  "docstring-missing-returns",
+  "docstring-missing-exception",
+  "line-too-long",
+  "implicit-namespace-package",
 ]
 preview = true
 select = ["ALL"]

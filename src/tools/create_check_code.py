@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from io import IOBase
 
 
-def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
+def proc_prob(  # ruff:ignore[complex-structure, too-many-branches, too-many-arguments, too-many-statements, too-many-positional-arguments]
     fp_ok: IOBase,
     fp_ng: IOBase,
     count: int,
@@ -68,7 +68,7 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
         raise ValueError(msg)
     if re.match(r"_ans = \w+ = ", source):
         raise ValueError(msg)
-    answers = re.findall("```python\n(.*?)```", source, re.DOTALL)  # noqa: RUF039
+    answers = re.findall("```python\n(.*?)```", source, re.DOTALL)  # ruff:ignore[unraw-re-pattern]
     if not answers:
         raise ValueError(msg)
     if metadata.get("editable", True) or not metadata.get("frozen", True):
@@ -94,7 +94,7 @@ def proc_prob(  # noqa: C901 PLR0912 PLR0913 PLR0915 PLR0917
     return title, answers
 
 
-def create_check_code(  # noqa: C901, PLR0912, PLR0914, PLR0915
+def create_check_code(  # ruff:ignore[complex-structure, too-many-branches, too-many-locals, too-many-statements]
     nb_path: Path,
     fp_ok: IOBase,
     fp_ng: IOBase,
@@ -117,7 +117,7 @@ def create_check_code(  # noqa: C901, PLR0912, PLR0914, PLR0915
     prob_source = ""
     it = iter(cells)
     count = 0
-    while count < n_cells:  # noqa: PLR1702
+    while count < n_cells:  # ruff:ignore[too-many-nested-blocks]
         count += 1
         cell = next(it)
         source = cell["source"]
@@ -128,7 +128,7 @@ def create_check_code(  # noqa: C901, PLR0912, PLR0914, PLR0915
         if cell_type == "markdown":
             if m := re.search(r"^skip (\d+)", source):
                 n = int(m.group(1))
-                print(f"Skip {n} cells at {count}")  # noqa: T201
+                print(f"Skip {n} cells at {count}")  # ruff:ignore[print]
                 count += n
                 for _ in range(n):
                     next(it)
