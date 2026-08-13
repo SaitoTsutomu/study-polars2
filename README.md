@@ -66,6 +66,13 @@ uv run nbs/make_review.py
 
 抜き出した問題が依存しているオブジェクトがあれば、そのオブジェクトの生成を問題に含めてください。
 
+## ベンチマーク問題
+
+以下では生成AIのベンチマーク問題として本リポジトリを題材にしています。
+また各問題は単独で解けるようにアレンジしています。
+
+https://github.com/SaitoTsutomu/benchmark-tools
+
 ## 参考
 
 https://github.com/SaitoTsutomu/study-polars2
